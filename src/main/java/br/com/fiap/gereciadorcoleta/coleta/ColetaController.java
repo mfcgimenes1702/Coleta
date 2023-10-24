@@ -1,6 +1,7 @@
 package br.com.fiap.gereciadorcoleta.coleta;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class ColetaController {
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal OAuth2User user) {
         model.addAttribute("avatar_url", user.getAttribute("avatar_url"));
+        model.addAttribute("username", user.getAttribute("name"));
         model.addAttribute("coletas", service.findAll());
         return "coleta/index";
     }
@@ -32,9 +34,9 @@ public class ColetaController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirect) {
         if (service.delete(id)) {
-            redirect.addFlashAttribute("success", "Coleta apagada com sucesso");
+            redirect.addFlashAttribute("success", getMessage("coleta.delete.success"));
         } else {
-            redirect.addFlashAttribute("error", "Coleta não encontrada");
+            redirect.addFlashAttribute("error", getMessage("coleta.notfound"));
         }
         return "redirect:/coleta";
     }
@@ -56,8 +58,12 @@ public class ColetaController {
             return "/coleta/form";
 
         service.save(coleta);
-        redirect.addFlashAttribute("success", "Coleta cadastrada com sucesso");
+        redirect.addFlashAttribute("success", getMessage("task.create.success"));
         return "redirect:/coleta";
     }
 
+    private String getMessage(String code) {
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+
+    }
 }

@@ -16,11 +16,20 @@
         <div class="nav-wrapper">
             <a href="#" class="brand-logo">Gerenciador de Coletas</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li class="active"><a href="/coletas>pendentes</a></li>
-                <li><a href="#">concluídas</a></li>
-                <li><a href="#">usuários</a></li>
+                <li class="active"><a href="/coleta" th:text="#{coleta.pending}"></a></li>
+                <li><a href="#" th:text="#{coleta.done}"></a></li>
+                <li><a href="#" th:text="#{users}"></a></li>
                 <li>
-                    <img class="avatar" th:src="${avatar_url}" alt="">
+                    <!-- Dropdown Trigger -->
+                    <a class='dropdown-trigger' href='#' data-target='dropdown1'>
+                        <img class="avatar" th:src="${avatar_url}" alt="">
+                    </a>
+
+                    <!-- Dropdown Structure -->
+                    <ul id='dropdown1' class='dropdown-content'>
+                        <li><span th:text="${username}"></span></li>
+                        <li class="divider" tabindex="-1"></li>
+                        <li><a href="/logout"><i class="material-icons">logout</i>sair</a></li>
                 </li>
             </ul>
         </div>
@@ -62,5 +71,17 @@
 
 
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        const options = {
+            coverTrigger: false,
+            constrainWidth: false
+        }
+        var instances = M.Dropdown.init(elems, options);
+    });
+</script>
+
 
 </html>

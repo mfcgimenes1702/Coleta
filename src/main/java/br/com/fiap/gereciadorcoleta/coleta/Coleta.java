@@ -21,7 +21,7 @@ public class Coleta {
     @NotBlank
     String title;
 
-    @Size(min = 10, message = "a descrição deve ter pelo menos 10 caracteres")
+    @Size(min = 10, message = "{coleta.description.size}")
     String description;
 
     @Min(1)
